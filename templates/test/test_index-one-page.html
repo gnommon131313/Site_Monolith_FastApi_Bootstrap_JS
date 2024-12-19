@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Магазин</title>
+  <!-- Подключаем Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Навигация -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Магазин</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Переключить навигацию">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#catalog">Каталог</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#cart">Корзина</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#orders">Заказы</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Каталог товаров -->
+  <section id="catalog" class="container mt-5">
+    <h2>Каталог товаров</h2>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Товар 1">
+          <div class="card-body">
+            <h5 class="card-title">Товар 1</h5>
+            <p class="card-text">Цена: 1000 руб.</p>
+            <button class="btn btn-primary" onclick="addToCart('Товар 1', 1000)">Добавить в корзину</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Товар 2">
+          <div class="card-body">
+            <h5 class="card-title">Товар 2</h5>
+            <p class="card-text">Цена: 2000 руб.</p>
+            <button class="btn btn-primary" onclick="addToCart('Товар 2', 2000)">Добавить в корзину</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Товар 3">
+          <div class="card-body">
+            <h5 class="card-title">Товар 3</h5>
+            <p class="card-text">Цена: 1500 руб.</p>
+            <button class="btn btn-primary" onclick="addToCart('Товар 3', 1500)">Добавить в корзину</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Корзина -->
+  <section id="cart" class="container mt-5">
+    <h2>Корзина</h2>
+    <div id="cartItems">
+      <p>Корзина пуста</p>
+    </div>
+    <button class="btn btn-success" onclick="checkout()">Оформить заказ</button>
+  </section>
+
+  <!-- Страница заказов -->
+  <section id="orders" class="container mt-5">
+    <h2>Ваши заказы</h2>
+    <div id="ordersList">
+      <p>Нет заказов.</p>
+    </div>
+  </section>
+
+  <!-- Подключаем Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let cart = [];
+
+    // Функция для добавления товара в корзину
+    function addToCart(productName, productPrice) {
+      cart.push({ name: productName, price: productPrice });
+      updateCart();
+    }
+
+    // Обновление корзины
+    function updateCart() {
+      const cartItemsContainer = document.getElementById('cartItems');
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p>Корзина пуста</p>';
+      } else {
+        cartItemsContainer.innerHTML = '';
+        let total = 0;
+        cart.forEach(item => {
+          cartItemsContainer.innerHTML += `<p>${item.name} - ${item.price} руб.</p>`;
+          total += item.price;
+        });
+        cartItemsContainer.innerHTML += `<p><strong>Итого: ${total} руб.</strong></p>`;
+      }
+    }
+
+    // Оформление заказа
+    function checkout() {
+      if (cart.length === 0) {
+        alert('Ваша корзина пуста!');
+        return;
+      }
+
+      const ordersList = document.getElementById('ordersList');
+      const orderDetails = cart.map(item => `${item.name} - ${item.price} руб.`).join('<br>');
+      ordersList.innerHTML = `<p>Ваш заказ:<br>${orderDetails}</p><p><strong>Общая сумма: ${cart.reduce((total, item) => total + item.price, 0)} руб.</strong></p>`;
+      
+      // Очистка корзины после оформления заказа
+      cart = [];
+      updateCart();
+    }
+  </script>
+
+</body>
+</html>
